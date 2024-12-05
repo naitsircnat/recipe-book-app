@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+
 // 1. SETUP EXPRESS
 const express = require("express");
 const cors = require("cors");
@@ -398,6 +400,17 @@ async function main() {
       console.error("Error deleting review:", error);
       res.status(500).json({ error: "Internal server error" });
     }
+  });
+
+  app.post("/users", async function (req, res) {
+    const result = await db.collection("users").insertOne({
+      email: req.body.email,
+      password: await bcrypt.hash(req.body.password, 12),
+    });
+    res.json({
+      message: "New user account",
+      result: result,
+    });
   });
 }
 
