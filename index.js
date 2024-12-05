@@ -420,7 +420,7 @@ async function main() {
   });
 
   // Add user
-  app.post("/users", async function (req, res) {
+  app.post("/users", verifyToken, async function (req, res) {
     const result = await db.collection("users").insertOne({
       email: req.body.email,
       password: await bcrypt.hash(req.body.password, 12),
